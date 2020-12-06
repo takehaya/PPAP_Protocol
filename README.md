@@ -1,6 +1,6 @@
 # PPAP protocol
 
-アドベントカレンダーの季節だしネタに走ってみたかった。サンタさん僕にクリスマスプレゼントをください。
+ネタに走ってみたかった。サンタさん僕にクリスマスプレゼントをください。
 ちなみにPineappleは酢豚に入れないで欲しい派です🍍
 
 ## 元ネタ
@@ -21,7 +21,8 @@ Pen-Pineapple-Apple-Pen!
 Pen-Pineapple-Apple-Pen!
 Pico
 ```
-cf. [](https://www.youtube.com/watch?v=0E00Zuayv9Q)
+
+[![PPAP](http://img.youtube.com/vi/0E00Zuayv9Q/0.jpg)](http://www.youtube.com/watch?v=0E00Zuayv9Q)
 
 ## PPAPプロトコル
 * クライアントはサーバに「PPAP」か「(have 1)-(have 2)-...(have n)!」を送る。(シェイクハンド)
@@ -34,24 +35,40 @@ cf. [](https://www.youtube.com/watch?v=0E00Zuayv9Q)
 ![](./docs/PPAP_Protocol.png)
 
 クライアント/サーバ間でやり取りするメッセージ(PPAPパケット)のフォーマットは下図。
-254
+
 ```
 0                   1                   2                   3
 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|Version|  Hoplimit  |padding|           Total Length           |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                        Request Address                        |
+| Type  |Hoplimt|   Length      |           Padding             |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                        Origin Address                         |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                                                               |
-|                    PPAP(null-terminated string)               |
+|                           Pyload                              |
 |                                                               |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
-## Run
+* 暗号化の仕組みとして innerにデータのペイロードをつけてTypeの部分でPyloadのセマンティクスを書き換える予定だったが面倒なのでやらない
+    * Lengthもそんな感じ
+* hoplimitはプロキシできる最大数これで無限長PPAPを防ぐ（雑
+* Origin Addressは最初の送信元クライアントのアドレスをいれる
+
+## Build
+```
+make
 ```
 
+## Run
+以下は全て別々で開いて実行してください
 ```
+ip netns exec HOSTA make crun
+
+ip netns exec HOSTB make sbrun
+
+ip netns exec HOSTC make scrun
+```
+
+## 感想
+~~貴重なな土日を研究とバイトそっちのけで~~ 楽しんでやったけど滑ったら怖いなと思いました。

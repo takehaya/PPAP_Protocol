@@ -50,6 +50,10 @@ __create_network () {
 
     run ip netns exec HOSTA ip route add 172.27.2.0/24 via 172.27.1.2 dev veth-A-B
     run ip netns exec HOSTC ip route add 172.27.1.0/24 via 172.27.2.2 dev veth-C-B
+
+    run ip netns exec HOSTA sysctl -w net.ipv4.conf.all.rp_filter=0
+    run ip netns exec HOSTB sysctl -w net.ipv4.conf.all.rp_filter=0
+    run ip netns exec HOSTC sysctl -w net.ipv4.conf.all.rp_filter=0
 }
 
 destroy_network () {
