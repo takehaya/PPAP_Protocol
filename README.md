@@ -61,13 +61,19 @@ make
 ```
 
 ## Run
+
+```
+# make netns
+sudo ./script/playground.sh
+```
+
 以下は全て別々で開いて実行してください
 ```
-ip netns exec HOSTA make crun
+sudo ip netns exec HOSTA make crun
 
-ip netns exec HOSTB make sbrun
+sudo ip netns exec HOSTB make sbrun
 
-ip netns exec HOSTC make scrun
+sudo ip netns exec HOSTC make scrun
 ```
 
 ## 感想
